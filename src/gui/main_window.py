@@ -641,6 +641,9 @@ class HistoryDialog(ctk.CTkToplevel):
         self.scrollable_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=10)
         self.scrollable_frame.grid_columnconfigure(0, weight=1)
 
+        # Configure smoother scrolling
+        self.after(100, self._configure_smooth_scrolling)
+
         # Populate list
         self._populate_list()
 
@@ -653,6 +656,17 @@ class HistoryDialog(ctk.CTkToplevel):
         ).grid(row=2, column=0, padx=20, pady=(0, 20))
 
         self.grab_set()
+
+    def _configure_smooth_scrolling(self):
+        """Configure smoother scrolling behavior for history list."""
+        try:
+            # Access the internal canvas from CTkScrollableFrame
+            if hasattr(self.scrollable_frame, '_parent_canvas'):
+                canvas = self.scrollable_frame._parent_canvas
+                # Configure scrolling parameters for smoother behavior
+                canvas.configure(yscrollincrement=20)
+        except:
+            pass
 
     def _populate_list(self):
         """Populate the list of cached analyses."""

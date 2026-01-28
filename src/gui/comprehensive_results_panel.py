@@ -27,6 +27,20 @@ class ComprehensiveResultsPanel(ctk.CTkScrollableFrame):
         # Export buttons frame
         self.export_frame = None
 
+        # Fix scrolling behavior after initialization
+        self.after(100, self._configure_smooth_scrolling)
+
+    def _configure_smooth_scrolling(self):
+        """Configure smoother scrolling behavior."""
+        try:
+            # Access the internal canvas from CTkScrollableFrame
+            if hasattr(self, '_parent_canvas'):
+                canvas = self._parent_canvas
+                # Configure scrolling parameters for smoother behavior
+                canvas.configure(yscrollincrement=20)
+        except:
+            pass
+
     def display_results(self, app_metadata: Dict, detected_libraries: Dict):
         """
         Display comprehensive analysis results.
