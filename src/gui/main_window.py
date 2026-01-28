@@ -230,7 +230,7 @@ class MainWindow(ctk.CTk):
             highlightthickness=0
         )
         self.scan_line_canvas.grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 5))
-        self.scan_line_canvas.lower(self.progress_bar)
+        # Canvas will render behind progress bar in same grid cell
 
         # Status label with Matrix style
         self.status_label = ctk.CTkLabel(
@@ -744,7 +744,7 @@ class MainWindow(ctk.CTk):
             highlightthickness=0
         )
         self.matrix_canvas.place(x=0, y=0, relwidth=1, relheight=1)
-        self.matrix_canvas.lower()
+        # Canvas will be in background by default with place()
 
         # Initialize Matrix columns
         num_columns = 50
