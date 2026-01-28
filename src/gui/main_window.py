@@ -665,6 +665,28 @@ class HistoryDialog(ctk.CTkToplevel):
                 canvas = self.scrollable_frame._parent_canvas
                 # Configure scrolling parameters for smoother behavior
                 canvas.configure(yscrollincrement=20)
+
+                # Bind mousewheel to prevent glitchy behavior at boundaries
+                def _on_mousewheel(event):
+                    # Check if we're at boundaries
+                    yview = canvas.yview()
+                    at_top = yview[0] <= 0.0
+                    at_bottom = yview[1] >= 1.0
+
+                    # Determine scroll direction
+                    scroll_up = (event.num == 4 or event.delta > 0)
+                    scroll_down = (event.num == 5 or event.delta < 0)
+
+                    # Prevent scrolling if at boundary
+                    if (at_top and scroll_up) or (at_bottom and scroll_down):
+                        return "break"
+
+                    # Allow normal scrolling
+                    return None
+
+                canvas.bind("<MouseWheel>", _on_mousewheel, add="+")
+                canvas.bind("<Button-4>", _on_mousewheel, add="+")
+                canvas.bind("<Button-5>", _on_mousewheel, add="+")
         except:
             pass
 
