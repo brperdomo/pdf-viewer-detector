@@ -65,12 +65,13 @@ class MainWindow(ctk.CTk):
         stats = self.cache.get_stats()
         history_text = f"History ({stats['total_analyses']})"
 
-        ctk.CTkButton(
+        self.history_btn = ctk.CTkButton(
             header_frame,
             text=history_text,
             width=120,
             command=self._show_history
-        ).pack(side="right", padx=5)
+        )
+        self.history_btn.pack(side="right", padx=5)
 
     def _create_input_section(self):
         """Create input section."""
@@ -409,6 +410,9 @@ class MainWindow(ctk.CTk):
                 file_path=file_path
             )
 
+            # Update history count in header
+            self._update_history_count()
+
             # Display results
             self._update_progress(1.0)
             self._update_status("Complete!")
@@ -515,9 +519,20 @@ class MainWindow(ctk.CTk):
         self.status_label.configure(text="Cleared - Ready for new analysis")
         self.after(2000, lambda: self.status_label.configure(text="Ready"))
 
+    def _update_history_count(self):
+        """Update the History button text with current count."""
+        def update():
+            stats = self.cache.get_stats()
+            history_text = f"History ({stats['total_analyses']})"
+            self.history_btn.configure(text=history_text)
+        self.after(0, update)
+
     def _show_history(self):
         """Show analysis history dialog."""
-        HistoryDialog(self, self.cache, self._load_cached_analysis)
+        dialog = HistoryDialog(self, self.cache, self._load_cached_analysis)
+        # Wait for dialog to close, then update count in case items were deleted
+        dialog.wait_window()
+        self._update_history_count()
 
     def _load_cached_analysis(self, cached_data: dict):
         """
@@ -804,3 +819,8 @@ class HistoryDialog(ctk.CTkToplevel):
         # Update header
         stats = self.cache.get_stats()
         self.title(f"Analysis History - {stats['total_analyses']} Total")
+
+
+if __name__ == "__main__":
+    app = MainWindow()
+    app.mainloop()
