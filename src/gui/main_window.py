@@ -50,6 +50,10 @@ class MainWindow(ctk.CTk):
         self.matrix_canvas = None
         self.title_pulse_direction = 1
         self.title_brightness = 255
+        self.analyzing_animation_dots = 0
+        self.analyzing_animation_active = False
+        self.scan_line_canvas = None
+        self.scan_line_position = 0
 
         # State
         self.is_analyzing = False
@@ -217,6 +221,17 @@ class MainWindow(ctk.CTk):
         self.progress_bar.grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 5))
         self.progress_bar.set(0)
 
+        # Scanning line effect canvas
+        self.scan_line_canvas = tk.Canvas(
+            self.progress_frame,
+            width=960,
+            height=8,
+            bg=self.matrix_bg,
+            highlightthickness=0
+        )
+        self.scan_line_canvas.grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 5))
+        self.scan_line_canvas.lower(self.progress_bar)
+
         # Status label with Matrix style
         self.status_label = ctk.CTkLabel(
             self.progress_frame,
@@ -374,7 +389,7 @@ class MainWindow(ctk.CTk):
         self.progress_frame.grid()
         self.progress_bar.set(0)
         self.is_analyzing = True
-        self.analyze_btn.configure(state="disabled", text="Analyzing...")
+        self.analyze_btn.configure(state="disabled", text="[ ANALYZING... ]")
 
         # Run analysis in background thread
         thread = threading.Thread(
@@ -475,9 +490,10 @@ class MainWindow(ctk.CTk):
             # Update history count in header
             self._update_history_count()
 
-            # Display results
+            # Display results with completion animation
             self._update_progress(1.0)
-            self._update_status("Complete!")
+            self._animate_completion()
+            self._update_status("[ ANALYSIS COMPLETE ]")
 
             self.after(500, lambda: self._display_results(
                 analysis_result.metadata,
@@ -547,8 +563,103 @@ class MainWindow(ctk.CTk):
         self.after(0, lambda: self.progress_bar.set(value))
 
     def _update_status(self, message: str):
-        """Update status label."""
-        self.after(0, lambda: self.status_label.configure(text=message))
+        """Update status label with Matrix-style animation."""
+        # Start analyzing animation if analyzing
+        if self.is_analyzing and not self.analyzing_animation_active:
+            self.analyzing_animation_active = True
+            self._animate_analyzing()
+            self._animate_scan_line()
+        elif not self.is_analyzing:
+            self.analyzing_animation_active = False
+            if self.scan_line_canvas:
+                self.scan_line_canvas.delete("scanline")
+
+        self.after(0, lambda: self.status_label.configure(text=f">> {message}"))
+
+    def _animate_analyzing(self):
+        """Animate status text during analysis with scanning dots."""
+        if not self.analyzing_animation_active:
+            return
+
+        # Cycle through scanning dots
+        self.analyzing_animation_dots = (self.analyzing_animation_dots + 1) % 4
+        dots = "." * self.analyzing_animation_dots
+
+        # Get current status text
+        current_text = self.status_label.cget("text")
+        if current_text.startswith(">>"):
+            base_text = current_text.replace("...", "").replace("..", "").replace(".", "").strip()
+            animated_text = f"{base_text}{dots}"
+            self.status_label.configure(text=animated_text)
+
+        # Pulse the status label color
+        brightness = 180 + (self.analyzing_animation_dots * 20)
+        color = f"#{0:02x}{brightness:02x}{int(brightness * 0.25):02x}"
+        self.status_label.configure(text_color=color)
+
+        # Continue animation
+        if self.analyzing_animation_active:
+            self.after(300, self._animate_analyzing)
+
+    def _animate_scan_line(self):
+        """Animate a scanning line effect across the progress bar."""
+        if not self.analyzing_animation_active or not self.scan_line_canvas:
+            return
+
+        # Clear previous line
+        self.scan_line_canvas.delete("scanline")
+
+        # Draw scanning line
+        x_pos = self.scan_line_position
+        self.scan_line_canvas.create_line(
+            x_pos, 0,
+            x_pos, 8,
+            fill=self.matrix_green,
+            width=3,
+            tags="scanline"
+        )
+
+        # Draw fading trail
+        for i in range(1, 20):
+            trail_x = x_pos - (i * 5)
+            if trail_x >= 0:
+                brightness = max(20, 255 - (i * 15))
+                color = f"#{0:02x}{brightness:02x}{0:02x}"
+                self.scan_line_canvas.create_line(
+                    trail_x, 0,
+                    trail_x, 8,
+                    fill=color,
+                    width=2,
+                    tags="scanline"
+                )
+
+        # Update position
+        self.scan_line_position += 10
+        if self.scan_line_position > 960:
+            self.scan_line_position = 0
+
+        # Continue animation
+        if self.analyzing_animation_active:
+            self.after(30, self._animate_scan_line)
+
+    def _animate_completion(self):
+        """Animate a completion flash effect."""
+        def flash(count=0):
+            if count >= 3:
+                self.status_label.configure(text_color=self.matrix_green)
+                return
+
+            # Toggle between bright and normal
+            if count % 2 == 0:
+                self.status_label.configure(text_color="#00FF00")
+                self.progress_bar.configure(progress_color="#00FF00")
+            else:
+                self.status_label.configure(text_color=self.matrix_green)
+                self.progress_bar.configure(progress_color=self.matrix_green)
+
+            self.after(150, lambda: flash(count + 1))
+
+        flash()
 
     def _show_error(self, message: str):
         """Show error message."""
@@ -557,7 +668,7 @@ class MainWindow(ctk.CTk):
     def _analysis_complete(self):
         """Called when analysis is complete."""
         self.is_analyzing = False
-        self.analyze_btn.configure(state="normal", text="Analyze")
+        self.analyze_btn.configure(state="normal", text="[ EXECUTE ANALYSIS ]")
         self.after(2000, lambda: self.progress_frame.grid_remove())
 
     def _clear_session(self):
@@ -575,10 +686,10 @@ class MainWindow(ctk.CTk):
 
         # Reset state
         self.is_analyzing = False
-        self.analyze_btn.configure(state="normal", text="Analyze")
+        self.analyze_btn.configure(state="normal", text="[ EXECUTE ANALYSIS ]")
 
         # Show confirmation
-        self.status_label.configure(text="Cleared - Ready for new analysis")
+        self.status_label.configure(text=">> [ SYSTEM CLEARED - READY FOR NEW ANALYSIS ]")
         self.after(2000, lambda: self.status_label.configure(text="Ready"))
 
     def _update_history_count(self):
@@ -649,6 +760,9 @@ class MainWindow(ctk.CTk):
         """Animate the Matrix rain effect."""
         self.matrix_canvas.delete("rain")
 
+        # Speed multiplier during analysis
+        speed_multiplier = 2.5 if self.is_analyzing else 1.0
+
         for col in self.matrix_columns:
             # Draw characters in column
             for i, char in enumerate(col['chars']):
@@ -671,8 +785,8 @@ class MainWindow(ctk.CTk):
                         tags="rain"
                     )
 
-            # Update position
-            col['y'] += col['speed']
+            # Update position - faster during analysis
+            col['y'] += col['speed'] * speed_multiplier
 
             # Reset if off screen
             if col['y'] > 850:
