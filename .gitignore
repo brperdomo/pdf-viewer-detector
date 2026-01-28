@@ -71,3 +71,4 @@ Thumbs.db
 
 # Project-specific
 pdf_detector_temp_*
+.pdf_detector_cache.db
