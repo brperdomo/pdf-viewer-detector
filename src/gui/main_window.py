@@ -14,6 +14,8 @@ from ..utils.analysis_cache import AnalysisCache
 from ..analyzers.apk_analyzer import APKAnalyzer
 from ..analyzers.ipa_analyzer import IPAAnalyzer
 from ..detectors.comprehensive_detector import ComprehensiveDetector
+import random
+import tkinter as tk
 
 
 class MainWindow(ctk.CTk):
@@ -23,16 +25,31 @@ class MainWindow(ctk.CTk):
         """Initialize main window."""
         super().__init__()
 
-        self.title("Library & SDK Analyzer")
+        self.title("⚡ MATRIX ANALYZER ⚡")
         self.geometry("1000x800")
+
+        # Matrix theme colors
+        self.matrix_green = "#00FF41"
+        self.matrix_dark_green = "#008F11"
+        self.matrix_bg = "#0D0208"
+        self.matrix_frame = "#001A00"
 
         # Set appearance mode
         ctk.set_appearance_mode("dark")
-        ctk.set_default_color_theme("blue")
+        ctk.set_default_color_theme("green")
+
+        # Configure background
+        self.configure(fg_color=self.matrix_bg)
 
         # Configure grid
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(3, weight=1)
+
+        # Matrix rain animation state
+        self.matrix_columns = []
+        self.matrix_canvas = None
+        self.title_pulse_direction = 1
+        self.title_brightness = 255
 
         # State
         self.is_analyzing = False
@@ -40,6 +57,9 @@ class MainWindow(ctk.CTk):
 
         # Initialize cache
         self.cache = AnalysisCache()
+
+        # Create Matrix rain background
+        self._create_matrix_background()
 
         # Create UI components
         self._create_header()
@@ -50,41 +70,64 @@ class MainWindow(ctk.CTk):
         # Show welcome message on startup
         self._check_credentials()
 
+        # Start Matrix animations
+        self._animate_matrix_rain()
+        self._animate_title_pulse()
+
     def _create_header(self):
         """Create header section."""
-        header_frame = ctk.CTkFrame(self, fg_color="transparent")
+        header_frame = ctk.CTkFrame(self, fg_color=self.matrix_frame, corner_radius=10, border_width=2, border_color=self.matrix_green)
         header_frame.grid(row=0, column=0, sticky="ew", padx=20, pady=(20, 10))
 
-        ctk.CTkLabel(
+        # Matrix-style title with glow effect
+        self.title_label = ctk.CTkLabel(
             header_frame,
-            text="Library & SDK Analyzer",
-            font=ctk.CTkFont(size=24, weight="bold")
-        ).pack(side="left")
+            text="⚡ MATRIX ANALYZER ⚡",
+            font=ctk.CTkFont(size=26, weight="bold", family="Courier"),
+            text_color=self.matrix_green
+        )
+        self.title_label.pack(side="left", padx=10)
 
-        # History button
+        # Animated subtitle
+        subtitle = ctk.CTkLabel(
+            header_frame,
+            text="[ DECODING REALITY ]",
+            font=ctk.CTkFont(size=10, family="Courier"),
+            text_color=self.matrix_dark_green
+        )
+        subtitle.pack(side="left", padx=(0, 20))
+
+        # History button with Matrix style
         stats = self.cache.get_stats()
-        history_text = f"History ({stats['total_analyses']})"
+        history_text = f"HISTORY [{stats['total_analyses']}]"
 
         self.history_btn = ctk.CTkButton(
             header_frame,
             text=history_text,
-            width=120,
+            width=140,
+            height=35,
+            font=ctk.CTkFont(size=12, weight="bold", family="Courier"),
+            fg_color=self.matrix_frame,
+            hover_color=self.matrix_dark_green,
+            text_color=self.matrix_green,
+            border_width=2,
+            border_color=self.matrix_green,
             command=self._show_history
         )
-        self.history_btn.pack(side="right", padx=5)
+        self.history_btn.pack(side="right", padx=10, pady=8)
 
     def _create_input_section(self):
         """Create input section."""
-        input_frame = ctk.CTkFrame(self)
+        input_frame = ctk.CTkFrame(self, fg_color=self.matrix_frame, corner_radius=10, border_width=2, border_color=self.matrix_dark_green)
         input_frame.grid(row=1, column=0, sticky="ew", padx=20, pady=10)
         input_frame.grid_columnconfigure(0, weight=1)
 
-        # Instructions
+        # Instructions with Matrix style
         instructions = ctk.CTkLabel(
             input_frame,
-            text="Download APK/XAPK from APKCombo.com or APKPure.com, then select the file below:",
-            font=ctk.CTkFont(size=12),
-            text_color="gray",
+            text=">> DOWNLOAD APK/XAPK FROM SOURCE >> SELECT TARGET FILE >>",
+            font=ctk.CTkFont(size=11, family="Courier"),
+            text_color=self.matrix_green,
             wraplength=900
         )
         instructions.grid(row=0, column=0, sticky="w", padx=10, pady=(10, 15))
@@ -96,24 +139,30 @@ class MainWindow(ctk.CTk):
 
         ctk.CTkLabel(
             file_frame,
-            text="Select APK, XAPK, or IPA file:",
-            font=ctk.CTkFont(size=13, weight="bold")
+            text="[ SELECT TARGET FILE ]",
+            font=ctk.CTkFont(size=12, weight="bold", family="Courier"),
+            text_color=self.matrix_green
         ).grid(row=0, column=0, sticky="w", pady=(0, 8))
 
         self.file_path_label = ctk.CTkLabel(
             file_frame,
-            text="No file selected",
-            font=ctk.CTkFont(size=11),
-            text_color="gray"
+            text=">> NO FILE SELECTED",
+            font=ctk.CTkFont(size=10, family="Courier"),
+            text_color=self.matrix_dark_green
         )
         self.file_path_label.grid(row=1, column=0, sticky="w")
 
         ctk.CTkButton(
             file_frame,
-            text="Browse Files",
-            width=120,
+            text="[ BROWSE ]",
+            width=140,
             height=35,
-            font=ctk.CTkFont(size=12, weight="bold"),
+            font=ctk.CTkFont(size=12, weight="bold", family="Courier"),
+            fg_color=self.matrix_frame,
+            hover_color=self.matrix_dark_green,
+            text_color=self.matrix_green,
+            border_width=2,
+            border_color=self.matrix_green,
             command=self._browse_file
         ).grid(row=1, column=1, padx=(10, 0))
 
@@ -123,44 +172,57 @@ class MainWindow(ctk.CTk):
         button_frame.grid_columnconfigure(0, weight=1)
         button_frame.grid_columnconfigure(1, weight=1)
 
-        # Analyze button
+        # Analyze button with Matrix style
         self.analyze_btn = ctk.CTkButton(
             button_frame,
-            text="Analyze",
-            font=ctk.CTkFont(size=14, weight="bold"),
-            height=40,
+            text="[ EXECUTE ANALYSIS ]",
+            font=ctk.CTkFont(size=14, weight="bold", family="Courier"),
+            height=45,
+            fg_color=self.matrix_dark_green,
+            hover_color=self.matrix_green,
+            text_color="#000000",
+            border_width=2,
+            border_color=self.matrix_green,
             command=self._start_analysis
         )
         self.analyze_btn.grid(row=0, column=0, sticky="ew", padx=(0, 5))
 
-        # Clear/New Analysis button
+        # Clear/New Analysis button with Matrix style
         self.clear_btn = ctk.CTkButton(
             button_frame,
-            text="Clear / New Analysis",
-            font=ctk.CTkFont(size=14),
-            height=40,
+            text="[ RESET ]",
+            font=ctk.CTkFont(size=14, family="Courier"),
+            height=45,
             command=self._clear_session,
-            fg_color="#555555",
-            hover_color="#666666"
+            fg_color=self.matrix_frame,
+            hover_color="#660000",
+            text_color=self.matrix_dark_green,
+            border_width=2,
+            border_color=self.matrix_dark_green
         )
         self.clear_btn.grid(row=0, column=1, sticky="ew", padx=(5, 0))
 
     def _create_progress_section(self):
         """Create progress section."""
-        self.progress_frame = ctk.CTkFrame(self)
+        self.progress_frame = ctk.CTkFrame(self, fg_color=self.matrix_frame, corner_radius=10, border_width=2, border_color=self.matrix_dark_green)
         self.progress_frame.grid(row=2, column=0, sticky="ew", padx=20, pady=10)
         self.progress_frame.grid_columnconfigure(0, weight=1)
 
-        # Progress bar
-        self.progress_bar = ctk.CTkProgressBar(self.progress_frame)
+        # Progress bar with Matrix colors
+        self.progress_bar = ctk.CTkProgressBar(
+            self.progress_frame,
+            progress_color=self.matrix_green,
+            fg_color=self.matrix_bg
+        )
         self.progress_bar.grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 5))
         self.progress_bar.set(0)
 
-        # Status label
+        # Status label with Matrix style
         self.status_label = ctk.CTkLabel(
             self.progress_frame,
-            text="Ready",
-            font=ctk.CTkFont(size=11)
+            text="[ SYSTEM READY ]",
+            font=ctk.CTkFont(size=11, family="Courier"),
+            text_color=self.matrix_green
         )
         self.status_label.grid(row=1, column=0, sticky="w", padx=10, pady=(0, 10))
 
@@ -523,7 +585,7 @@ class MainWindow(ctk.CTk):
         """Update the History button text with current count."""
         def update():
             stats = self.cache.get_stats()
-            history_text = f"History ({stats['total_analyses']})"
+            history_text = f"HISTORY [{stats['total_analyses']}]"
             self.history_btn.configure(text=history_text)
         self.after(0, update)
 
@@ -560,23 +622,111 @@ class MainWindow(ctk.CTk):
                 text_color="#4CAF50"
             )
 
+    def _create_matrix_background(self):
+        """Create Matrix rain background animation."""
+        # Create canvas for Matrix rain effect
+        self.matrix_canvas = tk.Canvas(
+            self,
+            width=1000,
+            height=800,
+            bg=self.matrix_bg,
+            highlightthickness=0
+        )
+        self.matrix_canvas.place(x=0, y=0, relwidth=1, relheight=1)
+        self.matrix_canvas.lower()
+
+        # Initialize Matrix columns
+        num_columns = 50
+        for i in range(num_columns):
+            self.matrix_columns.append({
+                'x': i * 20,
+                'y': random.randint(-800, 0),
+                'speed': random.uniform(2, 8),
+                'chars': ''.join(random.choices('01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン', k=20))
+            })
+
+    def _animate_matrix_rain(self):
+        """Animate the Matrix rain effect."""
+        self.matrix_canvas.delete("rain")
+
+        for col in self.matrix_columns:
+            # Draw characters in column
+            for i, char in enumerate(col['chars']):
+                y_pos = col['y'] + (i * 20)
+                if 0 <= y_pos <= 800:
+                    # Fade effect - brighter at the head
+                    alpha = max(0, 255 - (i * 20))
+                    if i == 0:
+                        color = self.matrix_green
+                    else:
+                        # Darker green for tail
+                        brightness = max(20, alpha)
+                        color = f"#{0:02x}{brightness:02x}{0:02x}"
+
+                    self.matrix_canvas.create_text(
+                        col['x'], y_pos,
+                        text=char,
+                        fill=color,
+                        font=('Courier', 12, 'bold'),
+                        tags="rain"
+                    )
+
+            # Update position
+            col['y'] += col['speed']
+
+            # Reset if off screen
+            if col['y'] > 850:
+                col['y'] = random.randint(-100, -20)
+                col['speed'] = random.uniform(2, 8)
+                col['chars'] = ''.join(random.choices('01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン', k=20))
+
+        # Continue animation
+        self.after(50, self._animate_matrix_rain)
+
+    def _animate_title_pulse(self):
+        """Animate the title with a pulsing glow effect."""
+        try:
+            # Update brightness
+            self.title_brightness += self.title_pulse_direction * 5
+
+            # Reverse direction at limits
+            if self.title_brightness >= 255:
+                self.title_brightness = 255
+                self.title_pulse_direction = -1
+            elif self.title_brightness <= 180:
+                self.title_brightness = 180
+                self.title_pulse_direction = 1
+
+            # Calculate color
+            green_val = self.title_brightness
+            color = f"#{0:02x}{green_val:02x}{int(green_val * 0.25):02x}"
+
+            # Update title color
+            self.title_label.configure(text_color=color)
+        except:
+            pass
+
+        # Continue animation
+        self.after(50, self._animate_title_pulse)
+
     def _check_credentials(self):
         """Show welcome message on first run."""
         # Show info message on first run
         stats = self.cache.get_stats()
         if stats['total_analyses'] == 0:
             self.after(1000, lambda: messagebox.showinfo(
-                "Welcome",
-                "Welcome to Library & SDK Analyzer!\n\n"
-                "This tool analyzes Android and iOS apps to detect:\n"
-                "• PDF libraries (PSPDFKit, competitors)\n"
+                "⚡ SYSTEM INITIALIZED ⚡",
+                ">> MATRIX ANALYZER v2.0 ONLINE <<\n\n"
+                "[ DETECTION CAPABILITIES ]\n"
+                "• PDF Libraries (PSPDFKit, Competitors)\n"
                 "• Google Play Services & Firebase\n"
-                "• AndroidX/Jetpack libraries\n"
-                "• Analytics, crash reporting, and more\n\n"
-                "To get started:\n"
-                "1. Download APK/XAPK from APKCombo.com or APKPure.com\n"
-                "2. Click Browse Files to select the downloaded file\n"
-                "3. Click Analyze to detect PDF SDKs and other libraries"
+                "• AndroidX/Jetpack Libraries\n"
+                "• Analytics & Crash Reporting\n\n"
+                "[ EXECUTION PROTOCOL ]\n"
+                "1. Download Target APK/XAPK from Source\n"
+                "2. Select Target File via [BROWSE]\n"
+                "3. Execute Analysis via [EXECUTE ANALYSIS]\n\n"
+                ">> THE MATRIX HAS YOU <<"
             ))
 
 

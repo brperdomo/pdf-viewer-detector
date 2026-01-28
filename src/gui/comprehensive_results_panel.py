@@ -16,10 +16,28 @@ class ComprehensiveResultsPanel(ctk.CTkScrollableFrame):
 
     def __init__(self, parent, **kwargs):
         """Initialize results panel."""
-        super().__init__(parent, **kwargs)
+        # Matrix theme colors
+        matrix_green = "#00FF41"
+        matrix_bg = "#0D0208"
+        matrix_frame = "#001A00"
+
+        super().__init__(
+            parent,
+            fg_color=matrix_bg,
+            corner_radius=10,
+            border_width=2,
+            border_color=matrix_green,
+            **kwargs
+        )
 
         self.app_metadata = {}
         self.detected_libraries = {}
+
+        # Store Matrix colors
+        self.matrix_green = matrix_green
+        self.matrix_dark_green = "#008F11"
+        self.matrix_bg = matrix_bg
+        self.matrix_frame = matrix_frame
 
         # Configure grid
         self.grid_columnconfigure(0, weight=1)
