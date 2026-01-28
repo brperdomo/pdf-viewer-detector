@@ -1,0 +1,9 @@
+# GUI Framework
+customtkinter>=5.2.0
+pillow>=10.3.0
+
+# Android Analysis
+androguard>=4.1.0
+
+# iOS Analysis
+# (IPA analysis uses built-in zipfile and plistlib modules)

@@ -1,0 +1,122 @@
+{
+  "android_solutions": [
+    {
+      "name": "Cordova Document Viewer Plugin",
+      "description": "Cordova/PhoneGap plugin for viewing documents (uses system viewer or WebView)",
+      "type": "Cordova Plugin",
+      "signatures": {
+        "packages": [
+          "de.sitewaerts.cordova.documentviewer",
+          "org.apache.cordova.documentviewer"
+        ],
+        "classes": ["DocumentViewerPlugin"]
+      },
+      "commercial": false
+    },
+    {
+      "name": "Android PdfRenderer (System API)",
+      "description": "Native Android PDF rendering API (requires API 21+)",
+      "type": "System API",
+      "signatures": {
+        "packages": ["android.graphics.pdf"],
+        "classes": ["PdfRenderer", "PdfRenderer.Page"]
+      },
+      "commercial": false
+    },
+    {
+      "name": "Capacitor Document Viewer",
+      "description": "Capacitor plugin for document viewing",
+      "type": "Capacitor Plugin",
+      "signatures": {
+        "packages": [
+          "com.getcapacitor.community.documentviewer",
+          "capacitor.plugin.documentviewer"
+        ]
+      },
+      "commercial": false
+    },
+    {
+      "name": "React Native PDF Viewer",
+      "description": "React Native wrapper for PDF viewing",
+      "type": "React Native Module",
+      "signatures": {
+        "packages": [
+          "com.reactnativecommunity.pdf",
+          "org.wonday.pdf"
+        ]
+      },
+      "commercial": false
+    },
+    {
+      "name": "Flutter PDFView Plugin",
+      "description": "Flutter plugin for displaying PDFs",
+      "type": "Flutter Plugin",
+      "signatures": {
+        "packages": [
+          "io.scer.pdf_viewer",
+          "com.github.flutter_pdfview"
+        ]
+      },
+      "commercial": false
+    },
+    {
+      "name": "WebView PDF.js Implementation",
+      "description": "JavaScript PDF viewer running in WebView (Mozilla PDF.js)",
+      "type": "WebView Solution",
+      "signatures": {
+        "files": ["pdf.js", "pdf.worker.js", "pdfjs-dist"]
+      },
+      "commercial": false
+    },
+    {
+      "name": "System Intent PDF Viewer",
+      "description": "Opens PDFs using device's default PDF app via Intent",
+      "type": "System Integration",
+      "signatures": {
+        "classes": ["Intent.ACTION_VIEW"]
+      },
+      "commercial": false,
+      "note": "Difficult to detect reliably - requires runtime analysis"
+    }
+  ],
+  "ios_solutions": [
+    {
+      "name": "UIDocumentInteractionController",
+      "description": "iOS system controller for previewing documents",
+      "type": "System API",
+      "signatures": {
+        "classes": ["UIDocumentInteractionController"]
+      },
+      "commercial": false
+    },
+    {
+      "name": "QLPreviewController (QuickLook)",
+      "description": "iOS QuickLook framework for document preview",
+      "type": "System API",
+      "signatures": {
+        "frameworks": ["QuickLook.framework"],
+        "classes": ["QLPreviewController"]
+      },
+      "commercial": false
+    },
+    {
+      "name": "WKWebView PDF Display",
+      "description": "Displays PDFs using WKWebView (built-in WebKit support)",
+      "type": "WebView Solution",
+      "signatures": {
+        "classes": ["WKWebView"]
+      },
+      "commercial": false,
+      "note": "Common but not PDF-specific"
+    },
+    {
+      "name": "Cordova Document Viewer (iOS)",
+      "description": "Cordova plugin for document viewing on iOS",
+      "type": "Cordova Plugin",
+      "signatures": {
+        "classes": ["CDVDocumentViewer"]
+      },
+      "commercial": false
+    }
+  ]
+}

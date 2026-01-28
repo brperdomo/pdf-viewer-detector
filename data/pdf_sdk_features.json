@@ -1,0 +1,216 @@
+{
+  "pspdfkit": {
+    "features": {
+      "annotations": {
+        "name": "Annotations & Markup",
+        "description": "Highlighting, comments, drawing tools, sticky notes",
+        "signatures": {
+          "packages": ["com.pspdfkit.annotations"],
+          "classes": [
+            "AnnotationTool",
+            "InkAnnotation",
+            "HighlightAnnotation",
+            "NoteAnnotation",
+            "FreeTextAnnotation",
+            "StampAnnotation",
+            "AnnotationProvider"
+          ]
+        },
+        "tier": "standard"
+      },
+      "forms": {
+        "name": "Form Filling",
+        "description": "Interactive PDF forms, field validation, form designer",
+        "signatures": {
+          "packages": ["com.pspdfkit.forms"],
+          "classes": [
+            "FormField",
+            "FormElement",
+            "TextFormField",
+            "CheckBoxFormField",
+            "RadioButtonFormField",
+            "ComboBoxFormField"
+          ]
+        },
+        "tier": "standard"
+      },
+      "digital_signatures": {
+        "name": "Digital Signatures",
+        "description": "Sign documents, verify signatures, certificate validation",
+        "signatures": {
+          "classes": [
+            "SignatureFormElement",
+            "DigitalSignatureProvider",
+            "SignatureManager",
+            "SignaturePicker",
+            "SignatureAppearance"
+          ]
+        },
+        "tier": "premium"
+      },
+      "document_editor": {
+        "name": "Document Editing",
+        "description": "Add/remove/reorder pages, merge PDFs, rotate pages",
+        "signatures": {
+          "packages": ["com.pspdfkit.document.editor"],
+          "classes": [
+            "DocumentEditor",
+            "PageManipulation",
+            "PdfProcessor",
+            "PagePattern",
+            "NewPage"
+          ]
+        },
+        "tier": "standard"
+      },
+      "instant_json": {
+        "name": "Instant Collaboration",
+        "description": "Real-time collaboration, sync annotations across devices",
+        "signatures": {
+          "packages": ["com.pspdfkit.instant"],
+          "classes": [
+            "InstantJSON",
+            "InstantClient",
+            "SyncEngine",
+            "InstantDocumentDescriptor"
+          ]
+        },
+        "tier": "premium"
+      },
+      "redaction": {
+        "name": "Redaction",
+        "description": "Permanently remove sensitive content",
+        "signatures": {
+          "classes": [
+            "RedactionAnnotation",
+            "RedactionTool"
+          ]
+        },
+        "tier": "premium"
+      },
+      "comparison": {
+        "name": "Document Comparison",
+        "description": "Compare two PDF versions, highlight differences",
+        "signatures": {
+          "classes": [
+            "DocumentComparer",
+            "ComparisonResult",
+            "ComparisonOperation"
+          ]
+        },
+        "tier": "premium"
+      },
+      "ocr": {
+        "name": "OCR (Text Recognition)",
+        "description": "Extract text from scanned documents",
+        "signatures": {
+          "classes": [
+            "OCREngine",
+            "TextRecognition"
+          ]
+        },
+        "tier": "premium"
+      },
+      "measurement": {
+        "name": "Measurement Tools",
+        "description": "Measure distances, areas, perimeters in PDFs",
+        "signatures": {
+          "classes": [
+            "MeasurementAnnotation",
+            "MeasurementTool",
+            "ScaleCalibration"
+          ]
+        },
+        "tier": "premium"
+      },
+      "ui_components": {
+        "name": "UI Components",
+        "description": "Pre-built PDF viewer UI, thumbnails, outline view",
+        "signatures": {
+          "packages": ["com.pspdfkit.ui"],
+          "classes": [
+            "PdfActivity",
+            "PdfFragment",
+            "PdfView",
+            "ThumbnailBar",
+            "OutlineView"
+          ]
+        },
+        "tier": "standard"
+      }
+    }
+  },
+  "apryse": {
+    "features": {
+      "annotations": {
+        "name": "Annotations & Markup",
+        "description": "Markup tools, comments, highlights",
+        "signatures": {
+          "packages": ["com.pdftron.pdf.annots"],
+          "classes": [
+            "Annot",
+            "Markup",
+            "Ink",
+            "FreeText",
+            "Highlight"
+          ]
+        },
+        "tier": "standard"
+      },
+      "forms": {
+        "name": "Form Filling",
+        "description": "Interactive forms, form field management",
+        "signatures": {
+          "classes": [
+            "Field",
+            "FormField"
+          ]
+        },
+        "tier": "standard"
+      },
+      "digital_signatures": {
+        "name": "Digital Signatures",
+        "description": "Digital signature support",
+        "signatures": {
+          "classes": [
+            "DigitalSignatureField",
+            "SignatureWidget"
+          ]
+        },
+        "tier": "premium"
+      },
+      "collaboration": {
+        "name": "Real-time Collaboration",
+        "description": "Multi-user collaboration features",
+        "signatures": {
+          "packages": ["com.pdftron.collab"],
+          "classes": [
+            "CollabManager",
+            "CollabClient"
+          ]
+        },
+        "tier": "premium"
+      }
+    }
+  },
+  "foxit": {
+    "features": {
+      "annotations": {
+        "name": "Annotations",
+        "description": "PDF annotation tools",
+        "signatures": {
+          "packages": ["com.foxit.sdk.pdf.annot"]
+        },
+        "tier": "standard"
+      },
+      "forms": {
+        "name": "Forms",
+        "description": "Form support",
+        "signatures": {
+          "packages": ["com.foxit.sdk.pdf.form"]
+        },
+        "tier": "standard"
+      }
+    }
+  }
+}

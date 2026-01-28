@@ -1,0 +1,75 @@
+{
+  "version_detection_patterns": {
+    "pspdfkit": {
+      "methods": [
+        {
+          "type": "class_name",
+          "pattern": "com.pspdfkit.BuildConfig",
+          "field": "VERSION_NAME",
+          "description": "BuildConfig version field"
+        },
+        {
+          "type": "class_name",
+          "pattern": "com.pspdfkit.PSPDFKit",
+          "field": "VERSION",
+          "description": "Main SDK class version constant"
+        },
+        {
+          "type": "manifest_meta",
+          "pattern": "com.pspdfkit.version",
+          "description": "Manifest metadata version"
+        }
+      ],
+      "version_history": {
+        "2025.1": "Latest - Jan 2025",
+        "2024.9": "Sep 2024",
+        "2024.6": "Jun 2024",
+        "2024.3": "Mar 2024",
+        "2024.1": "Jan 2024",
+        "2023.9": "Sep 2023 - Older",
+        "2023.6": "Jun 2023 - Older",
+        "older": "Pre-2023 - Very Outdated"
+      }
+    },
+    "apryse": {
+      "methods": [
+        {
+          "type": "class_name",
+          "pattern": "com.pdftron.pdf.PDFNet",
+          "field": "getVersion",
+          "description": "PDFNet version method"
+        },
+        {
+          "type": "class_name",
+          "pattern": "com.pdftron.BuildConfig",
+          "field": "VERSION_NAME",
+          "description": "BuildConfig version"
+        }
+      ],
+      "version_history": {
+        "10.x": "Latest - 2024-2025",
+        "9.x": "2023",
+        "8.x": "2022 - Older",
+        "7.x": "2021 - Very Outdated"
+      }
+    },
+    "foxit": {
+      "methods": [
+        {
+          "type": "class_name",
+          "pattern": "com.foxit.sdk.PDFException",
+          "description": "SDK presence indicator"
+        }
+      ]
+    },
+    "mupdf": {
+      "methods": [
+        {
+          "type": "native_lib",
+          "pattern": "libmupdf.so",
+          "description": "Check native library version via symbols"
+        }
+      ]
+    }
+  }
+}

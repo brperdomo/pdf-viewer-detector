@@ -1,0 +1,149 @@
+{
+  "google_play_services": {
+    "play-services-ads": "Display mobile ads and monetize your app with Google AdMob",
+    "play-services-ads-identifier": "Access advertising ID for personalized ads and analytics",
+    "play-services-ads-lite": "Lightweight ads library for banner and interstitial ads",
+    "play-services-ads-base": "Core advertising functionality and base classes",
+    "play-services-analytics": "Track app usage and user behavior with Google Analytics",
+    "play-services-auth": "User authentication and sign-in with Google accounts",
+    "play-services-auth-api-phone": "Phone number authentication and SMS verification",
+    "play-services-auth-api-signin": "Google Sign-In API for user authentication",
+    "play-services-auth-base": "Core authentication functionality",
+    "play-services-base": "Core Google Play Services functionality required by most APIs",
+    "play-services-basement": "Foundation layer for all Google Play Services",
+    "play-services-cast": "Cast media to Chromecast and other devices",
+    "play-services-cast-framework": "Simplified APIs for Google Cast integration",
+    "play-services-drive": "Access and sync files with Google Drive",
+    "play-services-fitness": "Access fitness and health data from Google Fit",
+    "play-services-games": "Google Play Games services for achievements and leaderboards",
+    "play-services-gcm": "Google Cloud Messaging for push notifications (deprecated)",
+    "play-services-location": "Access device location and geofencing capabilities",
+    "play-services-maps": "Integrate Google Maps into your app",
+    "play-services-measurement": "App analytics and measurement infrastructure",
+    "play-services-measurement-api": "Analytics measurement API",
+    "play-services-measurement-base": "Core measurement functionality",
+    "play-services-measurement-impl": "Implementation of measurement services",
+    "play-services-measurement-sdk": "Analytics SDK for tracking events",
+    "play-services-measurement-sdk-api": "Public API for measurement SDK",
+    "play-services-nearby": "Connect to nearby devices using Bluetooth and Wi-Fi",
+    "play-services-places": "Access place information and autocomplete",
+    "play-services-plus": "Google+ integration (deprecated)",
+    "play-services-safetynet": "Verify device integrity and detect security threats",
+    "play-services-tasks": "Asynchronous task handling for Google APIs",
+    "play-services-vision": "Image recognition, face detection, and barcode scanning",
+    "play-services-wallet": "Google Pay and digital wallet integration",
+    "play-services-wearable": "Communication with Android Wear devices",
+    "play-services-gass": "Google Ad Services Support",
+    "play-services-stats": "Usage statistics for Google Play Services",
+    "play-services-cloud-messaging": "Firebase Cloud Messaging for push notifications"
+  },
+
+  "firebase": {
+    "firebase-analytics": "Track user behavior and app events with Firebase Analytics",
+    "firebase-auth": "User authentication with email, phone, Google, Facebook, etc.",
+    "firebase-crashlytics": "Real-time crash reporting and error tracking",
+    "firebase-database": "Real-time NoSQL cloud database",
+    "firebase-firestore": "Flexible, scalable cloud database with offline support",
+    "firebase-functions": "Run backend code without managing servers",
+    "firebase-iid": "Firebase Instance ID for push notification targeting",
+    "firebase-messaging": "Send and receive push notifications via FCM",
+    "firebase-perf": "Monitor app performance and user experience",
+    "firebase-storage": "Store and serve user-generated content like images and videos",
+    "firebase-dynamic-links": "Deep links that work across app install and platforms",
+    "firebase-ml": "Machine learning features and model hosting",
+    "firebase-config": "Remotely configure app behavior and appearance",
+    "firebase-encoders": "Data encoding for Firebase services",
+    "firebase-annotations": "Annotations for Firebase SDK",
+    "firebase-components": "Component architecture for Firebase",
+    "firebase-common": "Common utilities for Firebase SDKs",
+    "firebase-datatransport": "Data transport layer for Firebase",
+    "firebase-installations": "Firebase Installations API for app instance management"
+  },
+
+  "androidx": {
+    "androidx.activity_activity": "Modern activity handling and lifecycle management",
+    "androidx.annotation_annotation": "Annotations for better code analysis and null safety",
+    "androidx.appcompat_appcompat": "Backward-compatible Material Design components",
+    "androidx.arch.core_core-runtime": "Core architecture components runtime",
+    "androidx.browser_browser": "Display web content using custom Chrome tabs",
+    "androidx.cardview_cardview": "Material Design card views",
+    "androidx.constraintlayout_constraintlayout": "Flexible layout manager for complex UIs",
+    "androidx.coordinatorlayout_coordinatorlayout": "Coordinate animations between child views",
+    "androidx.core_core": "Core utilities and backward compatibility helpers",
+    "androidx.datastore_datastore": "Modern data storage solution with coroutines",
+    "androidx.fragment_fragment": "Modular UI components with lifecycle management",
+    "androidx.lifecycle_lifecycle": "Lifecycle-aware components for data handling",
+    "androidx.navigation_navigation": "Navigation framework for app navigation patterns",
+    "androidx.paging_paging": "Load and display large datasets efficiently",
+    "androidx.recyclerview_recyclerview": "Efficient scrollable list of items",
+    "androidx.room_room": "SQLite database abstraction layer with compile-time verification",
+    "androidx.viewpager_viewpager": "Swipeable screen navigation",
+    "androidx.viewpager2_viewpager2": "Improved ViewPager with RecyclerView",
+    "androidx.work_work-runtime": "Background task scheduling and execution"
+  },
+
+  "kotlin": {
+    "kotlinx_coroutines_core": "Core coroutines for asynchronous programming",
+    "kotlinx_coroutines_android": "Android-specific coroutines with Main dispatcher",
+    "kotlinx_coroutines_rx2": "Interoperability with RxJava 2",
+    "kotlinx_coroutines_rx3": "Interoperability with RxJava 3",
+    "kotlinx_coroutines_reactive": "Reactive Streams support for coroutines",
+    "kotlinx_coroutines_play_services": "Integration with Google Play Services Tasks",
+    "kotlinx_serialization": "Kotlin multiplatform serialization",
+    "kotlin_reflect": "Kotlin reflection capabilities"
+  },
+
+  "analytics": {
+    "Mixpanel": "Product analytics to track user interactions and engagement",
+    "Amplitude": "Product analytics with user behavior tracking and cohort analysis",
+    "Segment": "Customer data platform for analytics integration hub",
+    "Flurry": "App analytics and advertising platform by Yahoo",
+    "Localytics": "Mobile engagement and app marketing platform",
+    "AppsFlyer": "Mobile attribution and marketing analytics",
+    "Adjust": "Mobile measurement and fraud prevention",
+    "Facebook Analytics": "Track user behavior and conversion events (deprecated)"
+  },
+
+  "crash_reporting": {
+    "Sentry": "Error tracking and performance monitoring for production apps",
+    "Bugsnag": "Automated crash reporting with real-time alerts",
+    "Crashlytics (Legacy)": "Crash reporting by Fabric (now part of Firebase)",
+    "Fabric": "Mobile development platform by Twitter (deprecated)",
+    "Instabug": "Bug reporting with in-app feedback and crash reports",
+    "Rollbar": "Error tracking and monitoring for web and mobile",
+    "Raygun": "Crash reporting and real user monitoring"
+  },
+
+  "networking": {
+    "OkHttp": "Efficient HTTP client for Android and Java",
+    "OkHttp3": "Latest version of OkHttp HTTP client",
+    "Retrofit": "Type-safe HTTP client for Android and Java",
+    "Retrofit2": "Latest version of Retrofit REST client",
+    "RxJava": "Reactive programming library for composing asynchronous code",
+    "RxJava2": "RxJava 2.x with improved performance",
+    "RxJava3": "Latest RxJava with Kotlin coroutines support",
+    "Picasso": "Image loading and caching library by Square",
+    "Glide": "Fast and efficient image loading library by Google",
+    "Universal Image Loader": "Powerful and flexible image loading library"
+  },
+
+  "ui": {
+    "Material Components": "Official Material Design components by Google",
+    "Lottie": "Render After Effects animations natively",
+    "Fresco": "Image loading library by Facebook with memory management"
+  },
+
+  "dependency_injection": {
+    "Dagger": "Compile-time dependency injection framework",
+    "Dagger2": "Improved Dagger with better performance",
+    "Koin": "Lightweight dependency injection for Kotlin",
+    "Hilt": "Android-specific DI built on top of Dagger"
+  },
+
+  "social": {
+    "Facebook SDK": "Integrate Facebook login, sharing, and analytics",
+    "Facebook Share": "Share content to Facebook from your app",
+    "Twitter SDK": "Twitter authentication and tweet posting",
+    "LinkedIn SDK": "LinkedIn profile access and sharing"
+  }
+}

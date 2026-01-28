@@ -1,0 +1,282 @@
+{
+  "ios_libraries": [
+    {
+      "name": "PDFKit",
+      "description": "Apple's native PDF framework",
+      "signatures": {
+        "frameworks": ["PDFKit.framework", "PDFKit"],
+        "imports": ["PDFKit"],
+        "classes": ["PDFView", "PDFDocument", "PDFPage"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "PSPDFKit",
+      "description": "Commercial PDF SDK",
+      "signatures": {
+        "frameworks": ["PSPDFKit.framework", "PSPDFKit", "PSPDFKitUI.framework"],
+        "imports": ["PSPDFKit", "PSPDFKitUI"],
+        "classes": ["PSPDFDocument", "PSPDFViewController"],
+        "files": ["PSPDFKit", "libPSPDFKit"]
+      },
+      "confidence_weight": 98
+    },
+    {
+      "name": "Adobe PDF Library (RPSDK)",
+      "description": "Adobe Reader PDF SDK",
+      "signatures": {
+        "frameworks": ["AdobeLibraryPDF.framework", "RPSDK.framework"],
+        "imports": ["AdobeLibraryPDF", "RPSDK"],
+        "files": ["libAdobePDF", "AdobeReader"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "Foxit PDF SDK",
+      "description": "Foxit PDF SDK for iOS",
+      "signatures": {
+        "frameworks": ["FoxitRDK.framework", "FoxitPDF.framework"],
+        "imports": ["FoxitRDK"],
+        "files": ["libFoxit", "FoxitRDK"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "CGPDFDocument",
+      "description": "Core Graphics PDF support",
+      "signatures": {
+        "frameworks": ["CoreGraphics.framework"],
+        "imports": ["CoreGraphics"],
+        "classes": ["CGPDFDocument", "CGPDFPage"]
+      },
+      "confidence_weight": 85
+    },
+    {
+      "name": "MuPDF",
+      "description": "Lightweight PDF viewer library",
+      "signatures": {
+        "files": ["libmupdf", "mupdf"],
+        "frameworks": ["MuPDF.framework"]
+      },
+      "confidence_weight": 90
+    },
+    {
+      "name": "Apryse SDK (PDFTron)",
+      "description": "Commercial PDF SDK (formerly PDFTron) - MAJOR COMPETITOR",
+      "signatures": {
+        "frameworks": ["PDFNet.framework", "Tools.framework", "PDFTron.framework"],
+        "imports": ["PDFNet", "Tools"],
+        "files": ["libPDFNet", "PDFNet", "PDFTron"]
+      },
+      "confidence_weight": 98
+    },
+    {
+      "name": "Kdan PDF SDK",
+      "description": "Kdan Mobile PDF SDK - COMPETITOR",
+      "signatures": {
+        "frameworks": ["KdanPDF.framework"],
+        "files": ["KdanPDF"]
+      },
+      "confidence_weight": 90
+    },
+    {
+      "name": "PDF.js (WebView)",
+      "description": "JavaScript PDF viewer running in WebView",
+      "signatures": {
+        "files": ["pdf.js", "pdf.worker.js", "pdfjs-dist"]
+      },
+      "confidence_weight": 80
+    }
+  ],
+  "android_libraries": [
+    {
+      "name": "AndroidPdfViewer",
+      "description": "Popular Android PDF viewer library by barteksc",
+      "signatures": {
+        "packages": [
+          "com.github.barteksc.pdfviewer",
+          "com.github.barteksc"
+        ],
+        "classes": ["PDFView", "PDFView.Configurator"],
+        "files": ["pdfviewer"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "Android PdfRenderer",
+      "description": "Native Android PDF rendering API",
+      "signatures": {
+        "packages": ["android.graphics.pdf"],
+        "classes": ["PdfRenderer", "PdfRenderer.Page"]
+      },
+      "confidence_weight": 90
+    },
+    {
+      "name": "Apache PDFBox",
+      "description": "Apache PDF library for Java",
+      "signatures": {
+        "packages": [
+          "org.apache.pdfbox",
+          "org.apache.pdfbox.pdmodel",
+          "org.apache.pdfbox.rendering"
+        ],
+        "files": ["pdfbox"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "iText",
+      "description": "iText PDF library",
+      "signatures": {
+        "packages": [
+          "com.itextpdf",
+          "com.itextpdf.text",
+          "com.itextpdf.kernel"
+        ],
+        "files": ["itext"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "MuPDF",
+      "description": "Lightweight PDF viewer library",
+      "signatures": {
+        "packages": ["com.artifex.mupdf"],
+        "files": ["libmupdf", "mupdf"],
+        "native_libs": ["libmupdf.so"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "Foxit PDF SDK",
+      "description": "Foxit PDF SDK for Android",
+      "signatures": {
+        "packages": [
+          "com.foxit.sdk",
+          "com.foxit.pdf"
+        ],
+        "files": ["foxit"],
+        "native_libs": ["libfoxit.so", "librdk.so"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "PSPDFKit",
+      "description": "Commercial PDF SDK",
+      "signatures": {
+        "packages": [
+          "com.pspdfkit",
+          "com.pspdfkit.ui",
+          "com.pspdfkit.annotations",
+          "com.pspdfkit.document",
+          "com.pspdfkit.forms",
+          "com.pspdfkit.listeners",
+          "com.pspdfkit.model"
+        ],
+        "classes": [
+          "PSPDFKit",
+          "PdfActivity",
+          "PdfFragment"
+        ],
+        "files": ["pspdfkit", "PSPDFKit"],
+        "native_libs": ["libpspdfkit.so", "libPSPDFKit.so"]
+      },
+      "confidence_weight": 98
+    },
+    {
+      "name": "Radaee PDF SDK",
+      "description": "Radaee PDF Reader SDK",
+      "signatures": {
+        "packages": [
+          "com.radaee.pdf",
+          "com.radaee.reader"
+        ],
+        "files": ["radaee"],
+        "native_libs": ["libRadaeePDF.so"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "Apryse SDK (PDFTron)",
+      "description": "Commercial PDF SDK (formerly PDFTron) - MAJOR COMPETITOR",
+      "signatures": {
+        "packages": [
+          "com.pdftron",
+          "com.pdftron.pdf",
+          "com.pdftron.pdf.tools",
+          "com.pdftron.pdf.controls",
+          "com.pdftron.pdf.model",
+          "com.pdftron.pdf.widget",
+          "com.pdftron.collab"
+        ],
+        "files": ["pdftron", "PDFNet"],
+        "native_libs": ["libPDFNetC.so", "libpdfnet.so", "libPDFNet.so"]
+      },
+      "confidence_weight": 98
+    },
+    {
+      "name": "Xodo PDF SDK",
+      "description": "Commercial PDF SDK - COMPETITOR",
+      "signatures": {
+        "packages": [
+          "com.xodo.pdf",
+          "com.xodo.pdf.viewer"
+        ],
+        "files": ["xodo"],
+        "native_libs": ["libxodo.so"]
+      },
+      "confidence_weight": 95
+    },
+    {
+      "name": "Syncfusion PDF Viewer",
+      "description": "Syncfusion commercial PDF viewer component",
+      "signatures": {
+        "packages": [
+          "com.syncfusion.pdf",
+          "com.syncfusion.pdfviewer"
+        ],
+        "files": ["syncfusion"]
+      },
+      "confidence_weight": 90
+    },
+    {
+      "name": "Kdan PDF SDK",
+      "description": "Kdan Mobile PDF SDK - COMPETITOR",
+      "signatures": {
+        "packages": [
+          "com.kdanmobile.pdf",
+          "com.kdanmobile.pdfviewer"
+        ],
+        "files": ["kdan"]
+      },
+      "confidence_weight": 90
+    },
+    {
+      "name": "PDF.js (WebView)",
+      "description": "JavaScript PDF viewer running in WebView",
+      "signatures": {
+        "files": ["pdf.js", "pdf.worker.js", "pdfjs-dist"]
+      },
+      "confidence_weight": 80
+    },
+    {
+      "name": "AndroidPdfViewerV1",
+      "description": "Older PDF viewer library by JoanZapata",
+      "signatures": {
+        "packages": [
+          "com.joanzapata.pdfview",
+          "com.joanzapata"
+        ]
+      },
+      "confidence_weight": 90
+    },
+    {
+      "name": "VoyagerPDF",
+      "description": "PDF viewer library",
+      "signatures": {
+        "packages": ["com.voyager.pdf"]
+      },
+      "confidence_weight": 85
+    }
+  ]
+}
