@@ -43,7 +43,7 @@ class MainWindow(ctk.CTk):
 
         # Configure grid
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(5, weight=1)
 
         # Matrix rain animation state
         self.matrix_columns = []
@@ -54,6 +54,8 @@ class MainWindow(ctk.CTk):
         self.analyzing_animation_active = False
         self.scan_line_canvas = None
         self.scan_line_position = 0
+        self.last_status_update = 0
+        self.status_update_throttle = 100  # milliseconds
 
         # State
         self.is_analyzing = False
@@ -67,6 +69,7 @@ class MainWindow(ctk.CTk):
 
         # Create UI components
         self._create_header()
+        self._create_description()
         self._create_input_section()
         self._create_progress_section()
         self._create_results_section()
@@ -92,10 +95,10 @@ class MainWindow(ctk.CTk):
         )
         self.title_label.pack(side="left", padx=10)
 
-        # Animated subtitle
+        # Description subtitle
         subtitle = ctk.CTkLabel(
             header_frame,
-            text="[ DECODING REALITY ]",
+            text="[ APP DECOMPILER & LIBRARY ANALYZER ]",
             font=ctk.CTkFont(size=10, family="Courier"),
             text_color=self.matrix_dark_green
         )
@@ -120,10 +123,39 @@ class MainWindow(ctk.CTk):
         )
         self.history_btn.pack(side="right", padx=10, pady=8)
 
+    def _create_description(self):
+        """Create description section explaining what the app does."""
+        desc_frame = ctk.CTkFrame(
+            self,
+            fg_color=self.matrix_frame,
+            corner_radius=8,
+            border_width=1,
+            border_color=self.matrix_dark_green
+        )
+        desc_frame.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 10))
+
+        desc_text = (
+            ">> DECOMPILES & ANALYZES ANDROID/iOS APPS FOR:\n"
+            "   • PDF Libraries (PSPDFKit, Adobe, Foxit, etc.)\n"
+            "   • Dependencies & SDKs (Firebase, Analytics, etc.)\n"
+            "   • Native Libraries & Frameworks\n"
+            "   • Package Structure & Metadata"
+        )
+
+        desc_label = ctk.CTkLabel(
+            desc_frame,
+            text=desc_text,
+            font=ctk.CTkFont(size=10, family="Courier"),
+            text_color=self.matrix_green,
+            justify="left",
+            anchor="w"
+        )
+        desc_label.pack(padx=15, pady=8)
+
     def _create_input_section(self):
         """Create input section."""
         input_frame = ctk.CTkFrame(self, fg_color=self.matrix_frame, corner_radius=10, border_width=2, border_color=self.matrix_dark_green)
-        input_frame.grid(row=1, column=0, sticky="ew", padx=20, pady=10)
+        input_frame.grid(row=2, column=0, sticky="ew", padx=20, pady=10)
         input_frame.grid_columnconfigure(0, weight=1)
 
         # Instructions with Matrix style
@@ -209,7 +241,7 @@ class MainWindow(ctk.CTk):
     def _create_progress_section(self):
         """Create progress section."""
         self.progress_frame = ctk.CTkFrame(self, fg_color=self.matrix_frame, corner_radius=10, border_width=2, border_color=self.matrix_dark_green)
-        self.progress_frame.grid(row=2, column=0, sticky="ew", padx=20, pady=10)
+        self.progress_frame.grid(row=3, column=0, sticky="ew", padx=20, pady=10)
         self.progress_frame.grid_columnconfigure(0, weight=1)
 
         # Progress bar with Matrix colors
@@ -248,14 +280,15 @@ class MainWindow(ctk.CTk):
         """Create results section."""
         results_label = ctk.CTkLabel(
             self,
-            text="Results",
-            font=ctk.CTkFont(size=16, weight="bold")
+            text="[ RESULTS ]",
+            font=ctk.CTkFont(size=16, weight="bold", family="Courier"),
+            text_color=self.matrix_green
         )
-        results_label.grid(row=3, column=0, sticky="nw", padx=20, pady=(10, 5))
+        results_label.grid(row=4, column=0, sticky="nw", padx=20, pady=(10, 5))
 
         self.results_panel = ComprehensiveResultsPanel(self, width=960, height=500)
-        self.results_panel.grid(row=4, column=0, sticky="nsew", padx=20, pady=(0, 20))
-        self.grid_rowconfigure(4, weight=1)
+        self.results_panel.grid(row=5, column=0, sticky="nsew", padx=20, pady=(0, 20))
+        self.grid_rowconfigure(5, weight=1)
 
     def _browse_file(self):
         """Open file browser to select APK or IPA file."""
@@ -563,7 +596,16 @@ class MainWindow(ctk.CTk):
         self.after(0, lambda: self.progress_bar.set(value))
 
     def _update_status(self, message: str):
-        """Update status label with Matrix-style animation."""
+        """Update status label with Matrix-style animation (throttled)."""
+        import time
+        current_time = time.time() * 1000  # Convert to milliseconds
+
+        # Throttle status updates to prevent animation stuttering
+        if current_time - self.last_status_update < self.status_update_throttle:
+            return
+
+        self.last_status_update = current_time
+
         # Start analyzing animation if analyzing
         if self.is_analyzing and not self.analyzing_animation_active:
             self.analyzing_animation_active = True
@@ -862,46 +904,74 @@ class HistoryDialog(ctk.CTkToplevel):
         self.cache = cache
         self.load_callback = load_callback
 
-        self.title("Analysis History")
+        # Matrix theme colors
+        self.matrix_green = "#00FF41"
+        self.matrix_dark_green = "#008F11"
+        self.matrix_bg = "#0D0208"
+        self.matrix_frame = "#001A00"
+
+        self.title("⚡ HISTORY DATABASE ⚡")
         self.geometry("900x600")
+
+        # Configure background
+        self.configure(fg_color=self.matrix_bg)
 
         # Configure grid
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
         # Header
-        header_frame = ctk.CTkFrame(self, fg_color="transparent")
+        header_frame = ctk.CTkFrame(self, fg_color=self.matrix_frame, corner_radius=10, border_width=2, border_color=self.matrix_green)
         header_frame.grid(row=0, column=0, sticky="ew", padx=20, pady=(20, 10))
 
         stats = self.cache.get_stats()
-        title_text = f"Analysis History - {stats['total_analyses']} Total"
+        title_text = f"[ CACHED ANALYSES: {stats['total_analyses']} ]"
 
         ctk.CTkLabel(
             header_frame,
             text=title_text,
-            font=ctk.CTkFont(size=18, weight="bold")
-        ).pack(side="left")
+            font=ctk.CTkFont(size=18, weight="bold", family="Courier"),
+            text_color=self.matrix_green
+        ).pack(side="left", padx=10, pady=10)
 
-        # Clear all button
+        # Clear all button with Matrix style
         ctk.CTkButton(
             header_frame,
-            text="Clear All",
-            width=100,
-            fg_color="#E74C3C",
-            hover_color="#C0392B",
+            text="[ CLEAR ALL ]",
+            width=120,
+            font=ctk.CTkFont(size=11, weight="bold", family="Courier"),
+            fg_color=self.matrix_frame,
+            hover_color="#660000",
+            text_color="#FF4444",
+            border_width=2,
+            border_color="#FF4444",
             command=self._clear_all
-        ).pack(side="right", padx=(10, 0))
+        ).pack(side="right", padx=(10, 10), pady=10)
 
-        # Refresh button
+        # Refresh button with Matrix style
         ctk.CTkButton(
             header_frame,
-            text="Refresh",
-            width=100,
+            text="[ REFRESH ]",
+            width=120,
+            font=ctk.CTkFont(size=11, weight="bold", family="Courier"),
+            fg_color=self.matrix_frame,
+            hover_color=self.matrix_dark_green,
+            text_color=self.matrix_green,
+            border_width=2,
+            border_color=self.matrix_green,
             command=self._refresh_list
-        ).pack(side="right")
+        ).pack(side="right", pady=10)
 
-        # Scrollable frame for history list
-        self.scrollable_frame = ctk.CTkScrollableFrame(self, width=860, height=450)
+        # Scrollable frame for history list with Matrix style
+        self.scrollable_frame = ctk.CTkScrollableFrame(
+            self,
+            width=860,
+            height=450,
+            fg_color=self.matrix_bg,
+            corner_radius=10,
+            border_width=2,
+            border_color=self.matrix_dark_green
+        )
         self.scrollable_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=10)
         self.scrollable_frame.grid_columnconfigure(0, weight=1)
 
@@ -911,11 +981,17 @@ class HistoryDialog(ctk.CTkToplevel):
         # Populate list
         self._populate_list()
 
-        # Close button
+        # Close button with Matrix style
         ctk.CTkButton(
             self,
-            text="Close",
-            width=100,
+            text="[ CLOSE ]",
+            width=120,
+            font=ctk.CTkFont(size=12, weight="bold", family="Courier"),
+            fg_color=self.matrix_frame,
+            hover_color=self.matrix_dark_green,
+            text_color=self.matrix_green,
+            border_width=2,
+            border_color=self.matrix_green,
             command=self.destroy
         ).grid(row=2, column=0, padx=20, pady=(0, 20))
 
@@ -965,9 +1041,9 @@ class HistoryDialog(ctk.CTkToplevel):
         if not analyses:
             ctk.CTkLabel(
                 self.scrollable_frame,
-                text="No cached analyses found.",
-                font=ctk.CTkFont(size=12),
-                text_color="gray"
+                text=">> NO CACHED ANALYSES FOUND",
+                font=ctk.CTkFont(size=12, family="Courier"),
+                text_color=self.matrix_dark_green
             ).pack(pady=40)
             return
 
@@ -983,8 +1059,14 @@ class HistoryDialog(ctk.CTkToplevel):
             analysis: Analysis summary dictionary
             index: Index in the list
         """
-        # Card frame
-        card = ctk.CTkFrame(self.scrollable_frame, fg_color="#2B2B2B", corner_radius=10)
+        # Card frame with Matrix style
+        card = ctk.CTkFrame(
+            self.scrollable_frame,
+            fg_color=self.matrix_frame,
+            corner_radius=10,
+            border_width=1,
+            border_color=self.matrix_dark_green
+        )
         card.pack(fill="x", padx=5, pady=8)
         card.grid_columnconfigure(0, weight=1)
 
@@ -993,32 +1075,33 @@ class HistoryDialog(ctk.CTkToplevel):
         header_row.grid(row=0, column=0, sticky="ew", padx=15, pady=(12, 5))
         header_row.grid_columnconfigure(0, weight=1)
 
-        # App name
+        # App name with Matrix style
         app_name = analysis.get('app_name', 'Unknown App')
         name_label = ctk.CTkLabel(
             header_row,
-            text=app_name,
-            font=ctk.CTkFont(size=15, weight="bold"),
+            text=f">> {app_name}",
+            font=ctk.CTkFont(size=14, weight="bold", family="Courier"),
+            text_color=self.matrix_green,
             anchor="w"
         )
         name_label.grid(row=0, column=0, sticky="w")
 
-        # Platform badge
+        # Platform badge with Matrix style
         platform = analysis.get('platform', 'unknown')
-        platform_color = "#3DDC84" if platform == "android" else "#147EFB"
+        platform_text = f"[ {platform.upper()} ]"
         platform_label = ctk.CTkLabel(
             header_row,
-            text=platform.upper(),
-            font=ctk.CTkFont(size=10, weight="bold"),
-            text_color="white",
-            fg_color=platform_color,
+            text=platform_text,
+            font=ctk.CTkFont(size=10, weight="bold", family="Courier"),
+            text_color=self.matrix_bg,
+            fg_color=self.matrix_green,
             corner_radius=4,
             padx=8,
             pady=2
         )
         platform_label.grid(row=0, column=1, sticky="e", padx=(10, 0))
 
-        # Details row
+        # Details row with Matrix style
         details_text = f"{analysis['package_name']}"
         if analysis.get('version_name'):
             details_text += f" • v{analysis['version_name']}"
@@ -1026,22 +1109,22 @@ class HistoryDialog(ctk.CTkToplevel):
         details_label = ctk.CTkLabel(
             card,
             text=details_text,
-            font=ctk.CTkFont(size=11),
-            text_color="gray",
+            font=ctk.CTkFont(size=10, family="Courier"),
+            text_color=self.matrix_dark_green,
             anchor="w"
         )
         details_label.grid(row=1, column=0, sticky="w", padx=15, pady=(0, 5))
 
-        # Date row
+        # Date row with Matrix style
         from datetime import datetime
         analyzed_date = datetime.fromisoformat(analysis['analyzed_date'])
         date_str = analyzed_date.strftime("%Y-%m-%d %H:%M")
 
         date_label = ctk.CTkLabel(
             card,
-            text=f"📅 Analyzed: {date_str}",
-            font=ctk.CTkFont(size=10),
-            text_color="#888888",
+            text=f">> Analyzed: {date_str}",
+            font=ctk.CTkFont(size=9, family="Courier"),
+            text_color=self.matrix_dark_green,
             anchor="w"
         )
         date_label.grid(row=2, column=0, sticky="w", padx=15, pady=(0, 5))
@@ -1050,26 +1133,34 @@ class HistoryDialog(ctk.CTkToplevel):
         button_row = ctk.CTkFrame(card, fg_color="transparent")
         button_row.grid(row=3, column=0, sticky="ew", padx=15, pady=(5, 12))
 
-        # Load button
+        # Load button with Matrix style
         load_btn = ctk.CTkButton(
             button_row,
-            text="Load Results",
+            text="[ LOAD ]",
             width=120,
             height=32,
-            fg_color="#4CAF50",
-            hover_color="#45A049",
+            font=ctk.CTkFont(size=11, weight="bold", family="Courier"),
+            fg_color=self.matrix_dark_green,
+            hover_color=self.matrix_green,
+            text_color=self.matrix_bg,
+            border_width=2,
+            border_color=self.matrix_green,
             command=lambda: self._load_analysis(analysis['id'])
         )
         load_btn.pack(side="left", padx=(0, 10))
 
-        # Delete button
+        # Delete button with Matrix style
         delete_btn = ctk.CTkButton(
             button_row,
-            text="Delete",
-            width=80,
+            text="[ DELETE ]",
+            width=100,
             height=32,
-            fg_color="#666666",
-            hover_color="#555555",
+            font=ctk.CTkFont(size=11, weight="bold", family="Courier"),
+            fg_color=self.matrix_frame,
+            hover_color="#440000",
+            text_color="#FF4444",
+            border_width=2,
+            border_color="#FF4444",
             command=lambda: self._delete_analysis(analysis['id'])
         )
         delete_btn.pack(side="left")
